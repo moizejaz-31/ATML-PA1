@@ -1,0 +1,92 @@
+# ==============================================================================
+# Gitignore for ATML PA1: Beyond IID
+# Focus: Only push coding files (.py), notebooks (.ipynb), and project configs.
+# Exclude: Datasets, weights, cached tensors, figures, report, and temp files.
+# ==============================================================================
+
+# --- Academic Report & LaTeX ---
+report/
+*.pdf
+*.tex
+*.bib
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+
+# --- Text Files (Ignore all .txt except requirements.txt) ---
+*.txt
+!requirements.txt
+
+# --- Datasets & Raw Archives ---
+data/
+datasets/
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.gz
+*.bin
+
+# --- Model Checkpoints & Pretrained Weights ---
+checkpoints/
+**/checkpoints/
+*.pth
+*.pt
+*.ckpt
+*.onnx
+
+# --- Cached Feature Representations & Arrays ---
+cache/
+**/cache/
+*.npy
+*.npz
+
+# --- Result Figures & Image Visualizations ---
+**/results/*.png
+**/results/*.jpg
+**/results/*.jpeg
+**/results/*.svg
+**/results/*.webp
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.webp
+
+# --- Python Bytecode & Package Builds ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# --- Virtual Environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Jupyter Checkpoints & Temporary Runs ---
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+scratch/
+
+# --- IDEs, Editors & OS Metadata ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Experiment Tracking ---
+wandb/
+runs/
