@@ -13,18 +13,28 @@ from torch.autograd import Function
 # ─── MMD ───
 
 def compute_mmd(source, target, bw_multipliers=(0.5, 1.0, 2.0)):
-    """Multi-kernel MMD^2 between source and target features.
-    Bandwidths = multiplier * median pairwise squared distance."""
+    """Unbiased multi-kernel MMD^2 between source and target features (U-statistic,
+    Gretton et al., 2012): the k(x_i, x_i) self-similarity terms are excluded from the
+    within-set averages, so the estimate is ~0 when both sets come from one distribution.
+
+    Kernel: sum of RBF kernels with bandwidths = multiplier * median pairwise squared
+    distance of the current combined batch (treated as a constant).
+
+    Why unbiased: the biased V-statistic (plain .mean() including the diagonal) has a floor
+    of ~0.30 for 8-vs-8 batches of the SAME domain (~0.10 at 24-vs-24). Minimising that floor
+    rewards collapsing each batch's features; with DAN-DG's 8-per-domain pairs this killed
+    the representation within ~10 steps (all images got the same prediction).
+    """
+    n, m = source.size(0), target.size(0)
     combined = torch.cat([source, target], dim=0)
     pw_sq = torch.cdist(combined, combined, p=2).pow(2)
     median_sq = torch.median(pw_sq[pw_sq > 0])
-    bws = [m * median_sq.item() for m in bw_multipliers]
-
-    def rbf_sum(x, y):
-        d = torch.cdist(x, y, p=2).pow(2)
-        return sum(torch.exp(-d / (2 * b + 1e-8)) for b in bws)
-
-    return rbf_sum(source, source).mean() + rbf_sum(target, target).mean() - 2 * rbf_sum(source, target).mean()
+    bws = [mult * median_sq.item() for mult in bw_multipliers]
+    K = sum(torch.exp(-pw_sq / (2 * b + 1e-8)) for b in bws)
+    k_ss, k_tt, k_st = K[:n, :n], K[n:, n:], K[:n, n:]
+    return ((k_ss.sum() - k_ss.diagonal().sum()) / (n * (n - 1))
+            + (k_tt.sum() - k_tt.diagonal().sum()) / (m * (m - 1))
+            - 2 * k_st.mean())
 
 
 # ─── Gradient Reversal Layer ───

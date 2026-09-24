@@ -1,0 +1,13 @@
+group,unknown class,predicted CIFAR-10,u_MLS,max logit,tau,judgement
+near,bus,truck,-12.617607,12.617607,-5.836651802062988,plausible
+near,fox,dog,-12.133742,12.133742,-5.836651802062988,plausible
+near,bus,truck,-11.545612,11.545612,-5.836651802062988,plausible
+near,bus,truck,-11.474073,11.474073,-5.836651802062988,plausible
+near,camel,cat,-11.43405,11.43405,-5.836651802062988,surprising
+near,wolf,dog,-11.385377,11.385377,-5.836651802062988,plausible
+far,bottle,cat,-12.212494,12.212494,-5.836651802062988,surprising
+far,mushroom,bird,-11.727251,11.727251,-5.836651802062988,surprising
+far,sunflower,bird,-11.523564,11.523564,-5.836651802062988,surprising
+far,keyboard,bird,-11.484175,11.484175,-5.836651802062988,surprising
+far,mushroom,bird,-11.319863,11.319863,-5.836651802062988,surprising
+far,keyboard,truck,-11.143924,11.143924,-5.836651802062988,surprising

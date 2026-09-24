@@ -1,10 +1,12 @@
 """
 CIFAR-adapted ResNet-18.
 
-Changes from standard ResNet-18:
-- 3×3 stride-1 conv (instead of 7×7 stride-2)
-- No initial max-pooling
-- Operates on 32×32 images
+Changes from torchvision ResNet-18: 3x3 stride-1 first conv, no initial max-pool,
+32x32 inputs. Random initialisation (no ImageNet weights).
+
+PROSER variant: `num_dummy` extra linear "dummy" classifiers on the same 512-d
+feature. `forward_from_mid` lets manifold mixup run layer3 -> head on mixed layer2
+activations.
 """
 
 import torch
@@ -17,39 +19,38 @@ class ResNetCIFAR(nn.Module):
 
     def __init__(self, num_classes=10, num_dummy=0):
         super().__init__()
-        base = resnet18(weights=None)
+        base = resnet18(weights=None, num_classes=num_classes)
         self.conv1 = nn.Conv2d(3, 64, 3, 1, 1, bias=False)
         self.bn1 = base.bn1
         self.relu = base.relu
-        self.layer1 = base.layer1
-        self.layer2 = base.layer2
-        self.layer3 = base.layer3
-        self.layer4 = base.layer4
+        self.layer1, self.layer2, self.layer3, self.layer4 = base.layer1, base.layer2, base.layer3, base.layer4
         self.avgpool = base.avgpool
         self.fc = nn.Linear(self.FEAT_DIM, num_classes)
         self.num_dummy = num_dummy
-        if num_dummy > 0:
-            self.dummies = nn.ModuleList([nn.Linear(self.FEAT_DIM, 1) for _ in range(num_dummy)])
+        self.dummy = nn.Linear(self.FEAT_DIM, num_dummy) if num_dummy > 0 else None
 
-    def extract_features(self, x, return_mid=False):
+    def add_dummies(self, num_dummy):
+        """Append randomly initialised dummy classifiers (PROSER)."""
+        self.num_dummy = num_dummy
+        self.dummy = nn.Linear(self.FEAT_DIM, num_dummy).to(self.fc.weight.device)
+
+    def pre_mix(self, x):
+        """phi_pre: input -> output of layer2."""
         x = self.relu(self.bn1(self.conv1(x)))
-        x = self.layer1(x)
-        x = self.layer2(x)
-        mid = x if return_mid else None
-        x = self.layer3(x)
-        x = self.layer4(x)
-        f = self.avgpool(x).flatten(1)
-        return (f, mid) if return_mid else f
+        return self.layer2(self.layer1(x))
 
-    def forward_from_mid(self, h):
-        x = self.layer3(h)
-        x = self.layer4(x)
-        return self.avgpool(x).flatten(1)
+    def post_mix(self, h):
+        """layer3 -> layer4 -> pooled 512-d feature."""
+        return self.avgpool(self.layer4(self.layer3(h))).flatten(1)
+
+    def heads(self, f):
+        logits = self.fc(f)
+        if self.dummy is not None:
+            return logits, f, self.dummy(f)
+        return logits, f
 
     def forward(self, x):
-        f = self.extract_features(x)
-        logits = self.fc(f)
-        if self.num_dummy > 0:
-            dummy = torch.cat([d(f) for d in self.dummies], dim=1)
-            return logits, f, dummy
-        return logits, f
+        return self.heads(self.post_mix(self.pre_mix(x)))
+
+    def forward_from_mid(self, h):
+        return self.heads(self.post_mix(h))

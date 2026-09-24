@@ -1,10 +1,15 @@
 # ==============================================================================
 # Gitignore for ATML PA1: Beyond IID
-# Focus: Only push coding files (.py), notebooks (.ipynb), and project configs.
-# Exclude: Datasets, weights, cached tensors, figures, report, and temp files.
+# The manual's repository deliverables: code, configuration files, split
+# logic/indices, environment specification, machine-readable results, README.
+# Kept:     .py source, notebooks, requirements.txt, READMEs,
+#           results/*.csv + *.json, split files, run configs (*_history.json),
+#           Task 1 evaluation-subset indices.
+# Excluded: datasets, model weights, cached features, figures/images,
+#           the report, logs, and temporary/legacy runs.
 # ==============================================================================
 
-# --- Academic Report & LaTeX ---
+# --- Academic Report & LaTeX (the PDF is submitted on LMS) ---
 report/
 *.pdf
 *.tex
@@ -19,7 +24,7 @@ report/
 *.fdb_latexmk
 *.fls
 
-# --- Text Files (Ignore all .txt except requirements.txt) ---
+# --- Text Files (manual extracts, notes; keep requirements.txt) ---
 *.txt
 !requirements.txt
 
@@ -34,30 +39,34 @@ datasets/
 *.bin
 
 # --- Model Checkpoints & Pretrained Weights ---
-checkpoints/
-**/checkpoints/
+# Weights are excluded; the small *_history.json next to each checkpoint holds the
+# run's exact configuration + training curves, so it is kept.
 *.pth
 *.pt
 *.ckpt
 *.onnx
+**/checkpoints/*
+!**/checkpoints/*_history.json
 
 # --- Cached Feature Representations & Arrays ---
-cache/
-**/cache/
+# Task 1's selected evaluation-image indices are kept (manual: save the selected identifiers).
 *.npy
 *.npz
+**/cache/*
+!task1_inductive_biases/cache/eval_indices.npy
 
-# --- Result Figures & Image Visualizations ---
-**/results/*.png
-**/results/*.jpg
-**/results/*.jpeg
-**/results/*.svg
-**/results/*.webp
+# --- Figures & Images (plots stay embedded in the executed notebooks) ---
 *.png
 *.jpg
 *.jpeg
+*.gif
 *.svg
 *.webp
+*.mp4
+
+# --- Superseded / unused runs ---
+**/results/legacy_*/
+task4_open_set/notebooks/0_colab_setup.ipynb
 
 # --- Python Bytecode & Package Builds ---
 __pycache__/
@@ -82,6 +91,7 @@ scratch/
 # --- IDEs, Editors & OS Metadata ---
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 .DS_Store

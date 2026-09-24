@@ -15,7 +15,7 @@ IMAGENET_STD = [0.229, 0.224, 0.225]
 
 TRAIN_TRANSFORM = transforms.Compose([
     transforms.Resize((256, 256)),
-    transforms.RandomResizedCrop(224),
+    transforms.RandomCrop(224),          # manual: "random 224x224 crop" (not RandomResizedCrop)
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
@@ -31,6 +31,7 @@ EVAL_TRANSFORM = transforms.Compose([
 # Training constants
 LR = 1e-4
 WD = 1e-4
+# Manual budget: <=30 epochs, early stop after 5 epochs without improvement. Change it here only.
 MAX_EPOCHS = 30
 PATIENCE = 5
 SRC_BATCH_PER_DOMAIN = 8
