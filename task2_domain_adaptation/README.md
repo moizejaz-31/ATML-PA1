@@ -71,6 +71,29 @@ domain + 24 target images per update; seed 6304; stratified 80/20 source splits 
 - The legacy checkpoints/results trained with `RandomResizedCrop` (before the protocol fix) are kept
   in `checkpoints/legacy_randomresizedcrop/` and `results/legacy_randomresizedcrop/` for reference only.
 
+## Master Empirical Results
+
+### Main Comparison Table
+*All checkpoints selected purely on mean source-validation macro-F1:*
+
+| Method | Mean Source F1 | Sketch Acc | Sketch F1 | $\Delta$ vs SO | Domain Separability | Selected Epoch |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Source-only (SO)** | 93.8% | 59.2% | 66.1% | $0.0\pp$ | 99.9% | 8 |
+| **DAN ($\lambda=1$)** | **94.2%** | **65.5%** | **61.0%** | **$+6.3\pp$** | **81.5%** | 14 |
+| **DANN** | 93.7% | 45.8% | 50.0% | $-13.5\pp$ | 100.0% | 12 |
+| **CDAN** | 92.4% | 52.0% | 47.0% | $-7.3\pp$ | 98.2% | 6 |
+
+### Per-Class Target Transfer (Sketch Accuracy %)
+| Class | $n$ | Source-only | DAN | DANN | CDAN | Transfer Dynamics |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| **dog** | 772 | 81.7 | 52.6 | 26.2 | 24.2 | Catastrophic drop across all adapted models. |
+| **elephant** | 740 | 57.8 | 75.3 | 25.1 | 67.2 | DAN lifts elephant $+17.5\pp$ via texture removal. |
+| **giraffe** | 753 | 37.5 | 53.8 | 37.8 | 20.2 | DAN improves $+16.3\pp$; CDAN degrades to 20.2%. |
+| **guitar** | 608 | 84.0 | 84.0 | 69.4 | 94.1 | Strong performance across all methods. |
+| **horse** | 816 | 37.9 | 61.6 | 58.1 | 62.0 | Major positive transfer (+23.7pp for DAN). |
+| **house** | 80 | 87.5 | 100.0 | 100.0 | 100.0 | Small class ($n=80$): perfectly predicted by adapted models. |
+| **person** | 160 | 60.0 | 69.4 | 93.1 | 30.0 | DANN over-predicts person at the expense of quadrupeds. |
+
 ## Result files (`results/`)
 
 `task2_main_table.csv` (required comparison table), `task2_per_class_target.csv`,

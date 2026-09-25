@@ -67,6 +67,7 @@ datasets/
 # --- Superseded / unused runs ---
 **/results/legacy_*/
 task4_open_set/notebooks/0_colab_setup.ipynb
+remote_task4/
 
 # --- Python Bytecode & Package Builds ---
 __pycache__/
