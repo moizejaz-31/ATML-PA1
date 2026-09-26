@@ -17,19 +17,19 @@ Standard machine learning relies on the Independent and Identically Distributed 
 
 1. **Task 1: Inductive Biases & Feature Representations (STL-10):**
    * Pretrained Vision Transformers exhibit substantially higher shape bias (**80.8%** for ViT-B/16, **85.1%** for CLIP) than convolutional networks (**60.8%** for ResNet-50) under AdaIN cue conflicts.
-   * Color perturbations (Grayscale, Hue rotation) produce minor drops ($<4.0\pp$), confirming color is treated as nuisance variation across all models.
-   * Spatial patch shuffling exposes severe sensitivity in CLIP ($-16.8\pp$ drop) as non-aligned 56px patches break contrastive embeddings, while ViT-B/16 remains resilient ($-6.4\pp$).
-   * Crucially, cue coverage is incomplete ($63.8\%\text{--}71.7\%$), meaning $\sim 1/3$ of predictions fall outside both shape and texture categories ($N_o$).
+   * Color perturbations (Grayscale, Hue rotation) produce minor drops (< 4.0 pp), confirming color is treated as nuisance variation across all models.
+   * Spatial patch shuffling exposes severe sensitivity in CLIP (-16.8 pp drop) as non-aligned 56px patches break contrastive embeddings, while ViT-B/16 remains resilient (-6.4 pp).
+   * Crucially, cue coverage is incomplete (63.8% to 71.7%), meaning ~1/3 of predictions fall outside both shape and texture categories ($N_o$).
 
 2. **Task 2: Unsupervised Domain Adaptation (PACS $\to$ Sketch):**
    * Multi-kernel Maximum Mean Discrepancy (DAN) bridges distribution shifts without target labels, lifting target accuracy from **59.2%** (Source-only) to **65.5%** (and **70.6%** at $\lambda=0.1$).
-   * Adversarial alignment exhibits catastrophic negative transfer: DANN drops to **45.8%** and CDAN to **52.0%** due to discriminator underfitting ($51.5\%$ domain accuracy) and gradient conflict.
+   * Adversarial alignment exhibits catastrophic negative transfer: DANN drops to **45.8%** and CDAN to **52.0%** due to discriminator underfitting (51.5% domain accuracy) and gradient conflict.
    * Over-alignment causes severe single-class collapse: setting $\lambda=10$ collapses the network to predicting `person` (4.07% accuracy).
 
 3. **Task 3: Domain Generalization (PACS, Sketch Unseen):**
    * **Zero-target generalization outperforms target-aware adaptation:** Without observing any target data, multi-source moment matching (DAN-DG, **69.0%**) and Sharpness-Aware Minimization (SAM, **68.3%**) outperform target-aware DAN (**65.5%**).
-   * Flattening loss minima (SAM, $\Delta_{\text{sharp}} = 0.091$) and enforcing multi-source invariance (DAN-DG, source separability $70.1\%$) provide two independent and effective pathways to out-of-distribution robustness.
-   * Severe class imbalance (PACS `house` $n=80$ vs `horse` $n=816$) causes accuracy and macro-F1 to diverge: SAM drops house accuracy to $46.3\%$ ($-41.3\pp$), depressing macro-F1 while maintaining high overall accuracy.
+   * Flattening loss minima (SAM, $\Delta_{\text{sharp}} = 0.091$) and enforcing multi-source invariance (DAN-DG, source separability 70.1%) provide two independent and effective pathways to out-of-distribution robustness.
+   * Severe class imbalance (PACS `house` $n=80$ vs `horse` $n=816$) causes accuracy and macro-F1 to diverge: SAM drops house accuracy to 46.3% (-41.3 pp), depressing macro-F1 while maintaining high overall accuracy.
 
 4. **Task 4: Open-Set Recognition (CIFAR-10 Known, CIFAR-100 Unknown):**
    * **Stronger closed-set classifiers do not ensure open-set safety:** GCSC achieves superior closed-set accuracy (**94.95%** vs 94.81%), but increases near-unknown false acceptance by **3.6 pp** ($35.0\% \to 31.4\%$).
@@ -157,21 +157,21 @@ jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeou
 ### Task 1: Inductive Biases (STL-10)
 | Model | Clean Acc | Clean Conf | Grayscale Drop | Hue Drop | Shuffle Drop | Shape Bias | Coverage |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **ResNet-50** | 97.0% | 0.93 | $-3.6\pp$ | $-3.2\pp$ | $-8.6\pp$ | **60.8%** | 63.8% |
-| **ViT-B/16** | 97.2% | 0.95 | $-2.6\pp$ | $-2.8\pp$ | $-6.4\pp$ | **80.8%** | 71.7% |
-| **CLIP Head** | 96.8% | 0.27* | $-4.0\pp$ | $-3.2\pp$ | $-16.8\pp$ | **85.1%** | 64.2% |
-| **CLIP Zero-Shot** | 93.4% | 0.93 | $-3.8\pp$ | $-3.0\pp$ | $-15.8\pp$ | **82.2%** | 67.9% |
+| **ResNet-50** | 97.0% | 0.93 | -3.6 pp | -3.2 pp | -8.6 pp | **60.8%** | 63.8% |
+| **ViT-B/16** | 97.2% | 0.95 | -2.6 pp | -2.8 pp | -6.4 pp | **80.8%** | 71.7% |
+| **CLIP Head** | 96.8% | 0.27* | -4.0 pp | -3.2 pp | -16.8 pp | **85.1%** | 64.2% |
+| **CLIP Zero-Shot** | 93.4% | 0.93 | -3.8 pp | -3.0 pp | -15.8 pp | **82.2%** | 67.9% |
 
 ### Task 2 & Task 3: PACS Sketch Adaptation & Generalization
 | Method | Target Access | Mean Source F1 | Source Separability | Sharpness ($\Delta_{\text{sharp}}$) | Sketch Acc | Sketch F1 | $\Delta$ vs Base |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Source-only / ERM** | None | 93.8% | 89.7% | 0.355 | 59.2% | 66.1% | $0.0\pp$ |
-| **DAN ($\lambda=1$)** | Unlabeled | 94.2% | 81.5% | — | 65.5% | 61.0% | $+6.3\pp$ |
-| **DAN ($\lambda=0.1$)** | Unlabeled | 93.9% | 96.6% | — | **70.6%** | **69.7%** | $+11.4\pp$ |
-| **DANN** | Unlabeled | 94.1% | 84.7% | — | 45.8% | 42.1% | $-13.4\pp$ |
-| **CDAN** | Unlabeled | 93.9% | 87.2% | — | 52.0% | 48.6% | $-7.2\pp$ |
-| **DAN-DG ($\lambda=1$)** | Zero | 93.9% | **70.1%** | 0.235 | **69.0%** | **70.4%** | $+9.8\pp$ |
-| **SAM ($\rho=0.05$)** | Zero | **95.4%** | 88.4% | **0.091** | 68.3% | 67.0% | $+9.1\pp$ |
+| **Source-only / ERM** | None | 93.8% | 89.7% | 0.355 | 59.2% | 66.1% | 0.0 pp |
+| **DAN ($\lambda=1$)** | Unlabeled | 94.2% | 81.5% | — | 65.5% | 61.0% | +6.3 pp |
+| **DAN ($\lambda=0.1$)** | Unlabeled | 93.9% | 96.6% | — | **70.6%** | **69.7%** | +11.4 pp |
+| **DANN** | Unlabeled | 94.1% | 84.7% | — | 45.8% | 42.1% | -13.4 pp |
+| **CDAN** | Unlabeled | 93.9% | 87.2% | — | 52.0% | 48.6% | -7.2 pp |
+| **DAN-DG ($\lambda=1$)** | Zero | 93.9% | **70.1%** | 0.235 | **69.0%** | **70.4%** | +9.8 pp |
+| **SAM ($\rho=0.05$)** | Zero | **95.4%** | 88.4% | **0.091** | 68.3% | 67.0% | +9.1 pp |
 
 ### Task 4: Open-Set Recognition (CIFAR-10 $\to$ CIFAR-100)
 | Model (Score) | Closed-Set Acc | Near AUROC | Far AUROC | All AUROC | Known Accept at $\tau$ | Near Reject at $\tau$ | Far Reject at $\tau$ | FPR@95 |

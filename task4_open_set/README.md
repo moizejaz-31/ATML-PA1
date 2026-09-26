@@ -79,7 +79,7 @@ To simulate real-world deployment, an operational threshold $\tau$ is calibrated
 | **PROSER (MLS)** | 94.35% | 80.1% | 87.5% | 83.8% | 94.7% | 32.0% | 48.5% | 59.8% |
 | **PROSER (Placeholder)** | 94.35% | 78.5% | 88.3% | 83.4% | 94.8% | 32.0% | 51.8% | 58.1% |
 
-*Key Finding:* GCSC achieves the highest closed-set accuracy ($94.95\%$), but near-unknown rejection drops by $3.6\pp$ ($35.0\% \to 31.4\%$). Strong closed-set optimization expands known decision regions into adjacent open space, causing near unknowns to be falsely absorbed.
+*Key Finding:* GCSC achieves the highest closed-set accuracy (94.95%), but near-unknown rejection drops by 3.6 pp (35.0% to 31.4%). Strong closed-set optimization expands known decision regions into adjacent open space, causing near unknowns to be falsely absorbed.
 
 ---
 

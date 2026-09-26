@@ -67,10 +67,10 @@ $$B_{\text{shape}} = \frac{N_s}{N_s + N_t}, \qquad \text{Cov} = \frac{N_s + N_t}
 
 | Backbone | Clean Acc | Clean Conf | Grayscale Drop | Hue Drop | Shuffle Drop | Shape Bias | Coverage |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **ResNet-50** | 97.0% | 0.93 | $-3.6\pp$ | $-3.2\pp$ | $-8.6\pp$ | **60.8%** | 63.8% |
-| **ViT-B/16** | 97.2% | 0.95 | $-2.6\pp$ | $-2.8\pp$ | $-6.4\pp$ | **80.8%** | 71.7% |
-| **CLIP Head** | 96.8% | 0.27* | $-4.0\pp$ | $-3.2\pp$ | $-16.8\pp$ | **85.1%** | 64.2% |
-| **CLIP Zero-Shot** | 93.4% | 0.93 | $-3.8\pp$ | $-3.0\pp$ | $-15.8\pp$ | **82.2%** | 67.9% |
+| **ResNet-50** | 97.0% | 0.93 | -3.6 pp | -3.2 pp | -8.6 pp | **60.8%** | 63.8% |
+| **ViT-B/16** | 97.2% | 0.95 | -2.6 pp | -2.8 pp | -6.4 pp | **80.8%** | 71.7% |
+| **CLIP Head** | 96.8% | 0.27* | -4.0 pp | -3.2 pp | -16.8 pp | **85.1%** | 64.2% |
+| **CLIP Zero-Shot** | 93.4% | 0.93 | -3.8 pp | -3.0 pp | -15.8 pp | **82.2%** | 67.9% |
 
 *\*Note on Confidence Artifact:* The low average confidence ($0.27$) of the CLIP linear probe is an artifact of training an unregularized linear head on unit-norm features without an explicit temperature scaler (like CLIP's native $100\times$ temperature multiplier), which artificially compresses the dynamic range of output logits.
 

@@ -56,9 +56,9 @@ We evaluate two distinct diagnostic mechanisms:
 
 | Method | Mean Source F1 | Worst Source F1 | Source Separability | Sharpness ($\Delta_{\text{sharp}}$) | Sketch Acc | Sketch F1 | $\Delta$ vs ERM |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **ERM** | 93.8% | 91.3% (Art) | 89.7% | 0.355 | 59.2% | 66.1% | $0.0\pp$ |
-| **DAN-DG** | 93.9% | 91.6% (Art) | **70.1%** | 0.235 | **69.0%** | **70.4%** | $+9.8\pp$ |
-| **SAM** | **95.4%** | **92.0%** (Art) | 88.4% | **0.091** | 68.3% | 67.0% | $+9.1\pp$ |
+| **ERM** | 93.8% | 91.3% (Art) | 89.7% | 0.355 | 59.2% | 66.1% | 0.0 pp |
+| **DAN-DG** | 93.9% | 91.6% (Art) | **70.1%** | 0.235 | **69.0%** | **70.4%** | +9.8 pp |
+| **SAM** | **95.4%** | **92.0%** (Art) | 88.4% | **0.091** | 68.3% | 67.0% | +9.1 pp |
 
 ### Per-Class Sketch Accuracy Breakdown (%)
 *Class sample sizes: dog ($n=772$), elephant ($n=740$), giraffe ($n=753$), guitar ($n=608$), horse ($n=816$), house ($n=80$), person ($n=160$). Total $n=3929$.*
@@ -66,14 +66,14 @@ We evaluate two distinct diagnostic mechanisms:
 | Class | ERM (Base) | DAN-DG | SAM | Behavioral Analysis |
 | :--- | :---: | :---: | :---: | :--- |
 | **dog** | 81.7 | 56.6 | 51.7 | Feature invariance erodes fine-grained canine textures. |
-| **elephant** | 57.8 | 69.2 | **93.0** | SAM achieves massive $+35.1\pp$ gain via flat boundary margins. |
+| **elephant** | 57.8 | 69.2 | **93.0** | SAM achieves massive +35.1 pp gain via flat boundary margins. |
 | **giraffe** | 37.5 | **65.6** | 52.2 | Multi-source alignment resolves color/spot discrepancy. |
 | **guitar** | 84.0 | 81.6 | **92.8** | Flat minima stabilize salient geometric contours. |
 | **horse** | 37.9 | **70.2** | 59.1 | Eliminates ERM horse $\to$ dog confusion (drops from 52% to 12%). |
 | **house** | 87.5 | 85.0 | 46.3* | Small class ($n=80$): 42% misclassified as elephant under SAM. |
 | **person** | 60.0 | **81.9** | 75.0 | Substantial generalization gains across non-photographic domains. |
 
-*\*Note on Imbalance:* Because `house` contains only 80 test images ($1\text{ image} = 1.25\pp$), its $41.3\pp$ drop depresses macro-F1 while overall accuracy remains high (68.3%).
+*\*Note on Imbalance:* Because `house` contains only 80 test images (1 image = 1.25 pp), its 41.3 pp drop depresses macro-F1 while overall accuracy remains high (68.3%).
 
 ---
 
