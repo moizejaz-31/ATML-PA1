@@ -4,12 +4,10 @@
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0%2B-red.svg)](https://pytorch.org/)
 [![Random Seed: 6304](https://img.shields.io/badge/Seed-6304-green.svg)](shared/src/seed.py)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Report](https://img.shields.io/badge/NeurIPS%20Report-12%20Pages%20Max-purple.svg)](report/main.pdf)
 
 > **Course:** EE-5102 / CS-6304: Advanced Topics in Machine Learning  
-> **Institution:** Department of Electrical Engineering & Computer Science  
+> **Institution:** Department of Computer Science, Lahore University of Management Sciences  
 > **Repository:** [https://github.com/moizejaz-31/ATML-PA1](https://github.com/moizejaz-31/ATML-PA1)  
-> **Report Deliverable:** [PA1_Beyond_IID_Report.pdf](PA1_Beyond_IID_Report.pdf) (12-Page Main Paper + References, followed by Complete Technical Appendices)
 
 ---
 
@@ -182,22 +180,6 @@ jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeou
 | **GCSC (MLS)** | **94.95%** | **81.4%** | **90.2%** | **85.8%** | 94.9% | 31.4% | **55.4%** | 56.6% |
 | **PROSER (MLS)** | 94.35% | 80.1% | 87.5% | 83.8% | 94.7% | 32.0% | 48.5% | 59.8% |
 | **PROSER (Placeholder)** | 94.35% | 78.5% | 88.3% | 83.4% | 94.8% | 32.0% | 51.8% | 58.1% |
-
----
-
-## Technical Report & Citation
-
-The complete findings, statistical analysis, failure case grids, and formal mathematical proofs are compiled in the 29-page course technical report ([PA1_Beyond_IID_Report.pdf](PA1_Beyond_IID_Report.pdf)):
-
-```bibtex
-@techreport{beyond_iid_2026,
-  title     = {Beyond IID: Representation Invariance, Domain Alignment, and Open-Set Generalization},
-  author    = {Moiz Ejaz},
-  institution = {Advanced Topics in Machine Learning, Course EE-5102 / CS-6304},
-  year      = {2026},
-  url       = {https://github.com/moizejaz-31/ATML-PA1}
-}
-```
 
 ---
 

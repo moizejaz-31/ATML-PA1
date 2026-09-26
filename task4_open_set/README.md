@@ -31,7 +31,7 @@ All experiments utilize a custom **CIFAR ResNet-18** ($3\times 3$ stride-1 stem,
 
 ## Theoretical Constraint: Convex Hull Bound
 
-As formally proven in the report (**Proposition 1**):
+**Theoretical Guarantee (Proposition 1):**
 > *Manifold mixup synthesizes representations strictly within the convex hull of known training representations $\text{Conv}(\mathcal{S})$. Consequently, synthetic data placeholders cannot populate the exterior open space $\mathcal{O}_{\text{ext}}$, leaving boundaries facing truly novel semantic space unsupported by synthetic data.*
 
 ---
